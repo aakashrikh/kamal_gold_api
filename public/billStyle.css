@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    margin: 0
+  }
+
+  #grandtotal{
+    font-size: 2em !important;
+    font-weight: bold !important;
+  }
+
+  #invoice-POS {
+    box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+    padding: 2mm;
+    width: 80mm;
+    background: #fff;
+  }
+
+  #invoice-POS ::selection {
+    background: #f31544;
+    color: #fff;
+  }
+
+  #invoice-POS ::moz-selection {
+    background: #f31544;
+    color: #fff;
+  }
+
+  #invoice-POS h1 {
+    font-size: 1.5em;
+    color: #222;
+  }
+
+  #invoice-POS h2 {
+    font-size: 2em;
+    font-weight: 300;
+  }
+
+  #invoice-POS h3 {
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 2em;
+    text-align: center;
+  }
+
+  #invoice-POS .info p {
+    text-align: center;
+    font-size: 1em;
+    line-height: 10px;
+    margin: 5px;
+  }
+
+  #invoice-POS .info p span {
+    line-height: 12px;
+  }
+
+  #invoice-POS .new_h3 {
+    text-align: center;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 2em;
+  }
+
+  #invoice-POS p {
+    font-size: 1em;
+    color: #666;
+    line-height: 1.2em;
+  }
+
+  #invoice-POS #top,
+  #invoice-POS #mid,
+  #invoice-POS #bot {
+    /* Targets all id with 'col-' */
+    border-bottom: 2px solid #b0b0b0;
+  }
+
+  #invoice-POS #top {
+    min-height: 20px;
+  }
+
+  /* #invoice-POS #mid {
+margin-top: 10px;
+} */
+  #invoice-POS #bot {
+    min-height: 50px;
+    padding-bottom: 10px;
+  }
+
+  #bot h3 {
+    text-align: center;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 2em;
+    border-bottom: 1px solid #eee;
+  }
+
+  #invoice-POS .clientlogo {
+    float: left;
+    height: 60px;
+    width: 60px;
+    background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
+    background-size: 60px 60px;
+    border-radius: 50px;
+  }
+
+  #invoice-POS .info {
+    display: block;
+    margin-left: 0;
+  }
+
+  #invoice-POS .title {
+    float: right;
+  }
+
+  #invoice-POS .title p {
+    text-align: right;
+  }
+
+  #invoice-POS table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #invoice-POS .tabletitle {
+    font-size: 0.5em;
+    background: #eee;
+  }
+
+  #invoice-POS .service {
+    border-bottom: 1px solid #eee;
+  }
+
+  #invoice-POS .item {
+    width: 24mm;
+  }
+
+  #invoice-POS .itemtext {
+    font-size: 0.9em;
+    line-height: 2em;
+    padding-left: 5px;
+    font-weight: 500;
+  }
+
+  #invoice-POS #legalcopy {
+    margin-top: 5mm;
+  }
+
+  .Rate h2 {
+    font-size: 1.5em !important;
+    color: #222 !important;
+  }
+
+  .payment h2 {
+    font-size: 1.5em !important;
+    color: #222 !important;
+  }
+
+  #legalcopy .legal {
+    text-align: center;
+    font-size: 1em;
+  }
+
+  #customer_details .customer_details_h3 {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 2em;
+  }
+
+  .name_phone_main {
+    border-bottom: 1px solid #eee;
+  }
+
+  .customer_order_details_main {
+    border-bottom: 1px solid #eee;
+  }
+
+  #name_phone {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #name_phone .phone_email_head {
+    width: 30%;
+    text-align: start;
+    font-size: 0.8em;
+    font-weight: 600;
+    line-height: 1.5em;
+  }
+
+  #name_phone .phone_email_content {
+    width: 70%;
+    text-align: start;
+    font-size: 0.8em;
+    font-weight: 300;
+    line-height: 1.5em;
+  }
+
+  #customer_order_details {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #customer_order_details .customer_order_details_head {
+    width: 40%;
+    text-align: start;
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 1.5em;
+  }
+
+  #customer_order_details .customer_order_details_content {
+    width: 60%;
+    text-align: start;
+    font-size: 0.9em;
+    font-weight: 300;
+    line-height: 1.5em;
+  }
+
+  .kot_heading {
+    text-align: center;
+    font-size: 1em !important;
+    font-weight: 300;
+    line-height: 2em;
+    border-bottom: 1px solid #eee;
+  }
+
+  .table_data {
+    font-size: 1.5em !important;
+  }
+
+  .kot_dT {
+    /* display: flex; */
+    /* align-items: center; */
+    width: 100%;
+    font-size: 0.5em;
+    text-align: center;
+  }
+
+  .mt-10 {
+    margin-top: 10px;
+  }
+
+  .text-center{
+    text-align: center;
+  }
