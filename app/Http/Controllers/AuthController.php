@@ -174,7 +174,6 @@ class AuthController extends Controller
 				$getos = $request->oprating_system;
 
 				//apply refer and earn code
-
 				refer_earn_setup::where("user_ip_address",$getip)
 				->where("refer_status","pending")
 				->where("user_device","Mobile")
@@ -442,6 +441,7 @@ class AuthController extends Controller
 
 	public function admin_login(request $request)
 	{
+
 		$validator = Validator::make($request->all(), [
             'phoneNumber' => 'required',
             'secret' => 'required',
@@ -454,29 +454,32 @@ class AuthController extends Controller
     	}
 
 		$match_secret="ggMjF4waGewcI*7#3F06";
-		$match_passcode="VZ5QZRBp3G$!52&f2^lq";
 		if($request->secret == $match_secret )
 		{
 			$contact=$request->phoneNumber;
-            $password= Hash::make($request->password);
 
-			$vendor = Vendor::where("contact", $request->phoneNumber)->first();
+			$vendor = Vendor::where("email", $request->phoneNumber)->first();
 
 			if(!isset($vendor)){
-				return response()->json(['error' => 'Account not found, Please Contact Admin for support'], 401);
+				return response()->json(['status'=>false,'error' => 'Account not found, Please Contact Admin for support'], 401);
        		}
+
+            if (!Hash::check($request->password, $vendor->password))
+            {
+                return response()->json(['status'=>false,'error' => 'Invalid Password, Try Again.'], 401);
+            }
 
 			$tokenResult = $vendor->createToken('Vendor');
         	$vendor->access_token = 'Bearer '.$tokenResult->accessToken;
         	// $user->token_type = ;
 
 				 //now return this token on success login attempt
-				$response = ['msg' => 'ok','token' => $vendor->access_token,'user_type' => 'login','usr' => $vendor->id];
+				$response = ['status'=>true,'msg' => 'ok','token' => $vendor->access_token,'user_type' => 'login','usr' => $vendor->id];
 
 			return $response;
 		}
 		else{
-			return response()->json(['error' => 'Unauthorized Access!'], 401);
+			return response()->json(['status'=>false,'error' => 'Unauthorized Access!'], 401);
 		}
 	}
 
