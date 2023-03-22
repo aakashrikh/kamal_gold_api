@@ -13,6 +13,6 @@ class scheme extends Model
 
     public function customer()
     {
-        return $this->belongsTo('user_scheme', 'user_id','scheme_id');
+        return $this->hasMany(user_scheme::class, 'scheme_id','id');
     }
 }

@@ -281,7 +281,7 @@ class AdminController extends Controller
     public function scheme_list(Request $request)
     {
 
-        $scheme = scheme::where('status','!=','deleted')->get();
+        $scheme = scheme::withCount('customer')->where('status','!=','deleted')->get();
 
         return response()->json(['status' => true, 'message' => 'Scheme get successfully','data'=>$scheme]);
 
