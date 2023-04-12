@@ -81,7 +81,7 @@ return [
 
         'vendors' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Vendor::class,
+            'model' => App\Models\vendor_staff_account::class,
         ],
 
         // 'users' => [

@@ -52,4 +52,11 @@ Route::middleware(['auth:vendor-api'])->group(function () {
     Route::post('add_scheme_customer', [AdminController::class,'add_scheme_customer']);
     Route::post('get_pending_payment',[AdminController::class,'get_pending_payment']);
 
+    Route::post('add_staff',[VendorStaffController::class,'add_staff']);
+    Route::post('update_staff',[VendorStaffController::class,'update_staff']);
+    Route::post('delete_staff',[VendorStaffController::class,'delete_staff']);
+    Route::post('fetch_staff',[VendorStaffController::class,'fetch_staff']);
+    Route::post('fetch_staff_single',[VendorStaffController::class,'fetch_staff_single']);
+
+
 });

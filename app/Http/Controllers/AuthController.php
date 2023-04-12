@@ -458,16 +458,17 @@ class AuthController extends Controller
 		{
 			$contact=$request->phoneNumber;
 
-			$vendor = Vendor::where("email", $request->phoneNumber)->first();
+			$vendor = vendor_staff_account::where("staff_contact", $contact)->first();
 
 			if(!isset($vendor)){
-				return response()->json(['status'=>false,'error' => 'Account not found, Please Contact Admin for support'], 401);
+				return response()->json(['error' => 'Account not found, Please Contact Admin for support'], 401);
        		}
 
-            if (!Hash::check($request->password, $vendor->password))
-            {
-                return response()->json(['status'=>false,'error' => 'Invalid Password, Try Again.'], 401);
-            }
+					 if (!Hash::check($request->password, $vendor->password))
+					 {
+							 return response()->json(['status'=>false,'error' => 'Invalid Password, Try Againw.'], 401);
+					 }
+
 
 			$tokenResult = $vendor->createToken('Vendor');
         	$vendor->access_token = 'Bearer '.$tokenResult->accessToken;
