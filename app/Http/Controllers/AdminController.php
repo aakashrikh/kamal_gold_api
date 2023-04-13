@@ -19,6 +19,30 @@ class AdminController extends Controller
 {
 	//method for contact verification
 
+    public function update_kyc(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'adhaar_card' => 'required',
+            'pan_card' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        $user = User::where('id', $request->id)->first();
+        if (!$user) {
+            return response()->json(['status' => false, 'message' => 'User not found']);
+        }
+
+        $user->adhaar_card = $request->adhaar_card;
+        $user->pancard = $request->pan_card;
+        $user->adhaar_verification = 'yes';
+        $user->save();
+
+        return response()->json(['status' => true, 'message' => 'Kyc updated successfully']);
+    }
 
     public function get_pending_payment(Request $request)
     {
@@ -67,7 +91,6 @@ class AdminController extends Controller
             'name' => 'required',
             'mobile' => 'required',
             'dob'=>'required',
-            'email' => 'required',
             'father_name' => 'required',
         ]);
 
@@ -80,10 +103,10 @@ class AdminController extends Controller
             return response()->json(['status' => false, 'message' => 'Contact already exist']);
         }
 
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            return response()->json(['status' => false, 'message' => 'Email already exist']);
-        }
+        // $user = User::where('email', $request->email)->first();
+        // if ($user) {
+        //     return response()->json(['status' => false, 'message' => 'Email already exist']);
+        // }
         $password = Hash::make(Str::random(8));
 
         $user = new User();
@@ -98,7 +121,7 @@ class AdminController extends Controller
         $user->status = 'active';
        if($user->save())
        {
-            return response()->json(['status' => true, 'message' => 'Customer added successfully']);
+            return response()->json(['status' => true, 'message' => 'Customer added successfully',]);
         }
        else
        {
@@ -188,7 +211,7 @@ class AdminController extends Controller
     public function customer_list(Request $request)
     {
 
-        $user = User::where('status','!=','deleted')->get();
+        $user = User::where('status','!=','deleted')->orderBy('id','DESC')->get();
 
         return response()->json(['status' => true, 'message' => 'Customer get successfully','data'=>$user]);
     }

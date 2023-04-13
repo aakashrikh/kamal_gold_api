@@ -63,4 +63,5 @@ Route::middleware(['auth:vendor-api'])->group(function () {
      Route::post('fetch_schemes',[AdminController::class,'fetch_schemes']);
      Route::post('undo_transaction',[AdminController::class,'undo_transaction']);
      Route::post('fetch_invoice',[AdminController::class,'fetch_invoice']);
+     Route::post('update_kyc',[AdminController::class,'update_kyc']);
 });
