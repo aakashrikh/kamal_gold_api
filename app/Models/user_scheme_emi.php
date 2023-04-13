@@ -15,4 +15,9 @@ class user_scheme_emi extends Model
     {
         return $this->belongsTo(user_scheme::class, 'user_scheme_id', 'id')->with('scheme')->with('user');
     }
+
+    public function staff()
+    {
+        return $this->belongsTo(vendor_staff_account::class, 'staff_id', 'staff_id');
+    }
 }

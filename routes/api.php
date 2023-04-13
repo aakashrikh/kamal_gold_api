@@ -58,5 +58,9 @@ Route::middleware(['auth:vendor-api'])->group(function () {
     Route::post('fetch_staff',[VendorStaffController::class,'fetch_staff']);
     Route::post('fetch_staff_single',[VendorStaffController::class,'fetch_staff_single']);
 
+     Route::post('add_payment',[AdminController::class,'add_payment']);
 
+     Route::post('fetch_schemes',[AdminController::class,'fetch_schemes']);
+     Route::post('undo_transaction',[AdminController::class,'undo_transaction']);
+     Route::post('fetch_invoice',[AdminController::class,'fetch_invoice']);
 });

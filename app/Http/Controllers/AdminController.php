@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\scheme;
 use App\Models\user_scheme;
 use App\Models\user_scheme_emi;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use App\Helpers\AppHelper;
@@ -35,7 +36,7 @@ class AdminController extends Controller
 
     public function get_collection(Request $request)
     {
-        $data= user_scheme_emi::with('scheme')->where('emi_status','paid')->orderBy('updated_at','DESC')->get();
+        $data= user_scheme_emi::with(['scheme','staff'])->where('emi_status','paid')->orderBy('updated_at','DESC')->get();
 
          if($data)
          {
@@ -53,6 +54,10 @@ class AdminController extends Controller
         $response['pending_verification']=0;
         $response['scheme']=scheme::where('status','!=','deleted')->count();
         $response['month_collection']=user_scheme_emi::where('emi_status','paid')->whereMonth('updated_at',date('m'))->sum('emi_amount');
+        $response['active_scheme']=user_scheme::where('scheme_status','active')->count();
+        $response['completed_scheme']=user_scheme::where('scheme_status','completed')->count();
+
+        $response['user']=Auth::user();
         $response['status']=true;
         return json_encode($response);
     }
@@ -339,6 +344,125 @@ class AdminController extends Controller
         }
 
         return response()->json($response);
+    }
+
+
+    public function add_payment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'payment_id' => 'required',
+            'emi_date' => 'required',
+            'payment_method'=>'required',
+            'invoice_id'=>'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        $emi_id=$request->payment_id;
+        $payment_date=$request->emi_date;
+        $payment_method=$request->payment_method;
+        
+        $remark=$request->remark;
+        $invoice_id=$request->invoice_id;
+
+        $emi=user_scheme_emi::find($emi_id);
+        $emi->emi_status='paid';
+        $emi->payment_method=$payment_method;
+        $emi->remark=$remark;
+        $emi->payment_date=$payment_date;
+        $emi->invoice_id=$invoice_id;
+        
+        $emi->staff_id=Auth::user()->staff_id;
+
+        $user_scheme_id=$emi->user_scheme_id;
+        if($emi->save())
+        {
+            //fetch pending payments
+
+            $pending_payments=user_scheme_emi::where('user_scheme_id',$user_scheme_id)->where('emi_status','pending')->count();
+
+            if($pending_payments==0)
+            {
+                $us=user_scheme::find($user_scheme_id);
+                $us->scheme_status='completed';
+                $us->save();
+            }
+
+            $vendor_id=Auth::user()->id;
+            $vendor=Vendor::find($vendor_id);
+    
+            $vendor->last_invoice=$vendor->last_invoice+1;
+            $vendor->save();
+            
+        }
+
+
+        return response()->json(['status' => true, 'message' => 'Payment added successfully']);
+    }
+
+    public function fetch_invoice(Request $request)
+    {
+        //vendor_id
+
+        $vendor_id=Auth::user()->id;
+        $vendor=Vendor::find($vendor_id);
+
+        $invoice=$vendor->last_invoice+1;
+
+        $response['status']=true;
+        $response['data']=$vendor->invoice_prifix.$invoice;
+
+        return json_encode($response);
+    }
+
+    public function fetch_schemes(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'type' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        $type=$request->type;
+        $schemes=user_scheme::with(['user','scheme','last'])->withCount(['paid','unpaid'])->where('scheme_status',$type)->get();
+
+        $response['status']=true;
+        $response['data']=$schemes;
+
+        return json_encode($response);
+    }
+
+    public function undo_transaction(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        $type=$request->id;
+
+        $emi=user_scheme_emi::find($type);
+        $emi->emi_status='pending';
+        $emi->payment_method='';
+        $emi->remark='';
+        $emi->payment_date='';
+        $emi->invoice_id='';
+        $emi->staff_id=0;
+        $emi->save();
+
+        $response['status']=true;
+        $response['message']='Transaction undo successfully';
+
+        return json_encode($response);
+
     }
 
 }

@@ -475,7 +475,7 @@ class AuthController extends Controller
         	// $user->token_type = ;
 
 				 //now return this token on success login attempt
-				$response = ['status'=>true,'msg' => 'ok','token' => $vendor->access_token,'user_type' => 'login','usr' => $vendor->id];
+				$response = ['status'=>true,'msg' => 'ok','token' => $vendor->access_token,'user_type' => 'login','usr' => $vendor];
 
 			return $response;
 		}
